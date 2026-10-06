@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FunctionWise - The Calculator for Learners, powered by AI</title>
+<style>
+:root{--paper:#f4f7fb;--grid:#dde6f2;--ink:#1d2b53;--soft:#566789;--card:#ffffff;--hi:#ffe66d;--key:#e8eef8;--line:#c5d2e6;--go:#1d2b53;--gofg:#ffffff;--hifg:#1d2b53;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#121a2e;--grid:#1b2641;--ink:#e8eefc;--soft:#9aaacb;--card:#18233d;--hi:#ffd84d;--key:#223153;--line:#2c3b60;--go:#ffd84d;--gofg:#121a2e;--hifg:#121a2e}}
+:root[data-theme="dark"]{--paper:#121a2e;--grid:#1b2641;--ink:#e8eefc;--soft:#9aaacb;--card:#18233d;--hi:#ffd84d;--key:#223153;--line:#2c3b60;--go:#ffd84d;--gofg:#121a2e;--hifg:#121a2e}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*{box-sizing:border-box}
+body{margin:0;background-color:var(--paper);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:30px 30px;color:var(--ink);font:17px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:1000px;margin:0 auto;padding:0 20px}
+nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0}
+.logo{font:700 1.5rem Georgia,"Times New Roman",serif;letter-spacing:-.02em}
+.logo b{background:linear-gradient(transparent 55%,var(--hi) 55%);padding:0 .08em;font-weight:700}
+.btn{display:inline-block;background:var(--go);color:var(--gofg);font:700 1rem system-ui,sans-serif;text-decoration:none;padding:13px 24px;border-radius:12px;border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);transition:transform .1s,box-shadow .1s}
+.btn:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+.btn:focus-visible,a:focus-visible{outline:3px solid var(--hi);outline-offset:3px}
+.btn.sm{padding:8px 16px;font-size:.92rem;box-shadow:3px 3px 0 var(--ink)}
+.hero{display:grid;grid-template-columns:1.05fr 1fr;gap:36px;align-items:center;padding:36px 0 64px}
+h1{font:700 clamp(2.4rem,6vw,4rem)/1.04 Georgia,"Times New Roman",serif;letter-spacing:-.03em;margin:0 0 18px}
+h1 em{font-style:normal;background:linear-gradient(transparent 58%,var(--hi) 58%)}
+.lede{font-size:1.15rem;color:var(--soft);margin:0 0 26px;max-width:34ch}
+.sub{margin-top:14px;font-size:.92rem;color:var(--soft)}
+.demo{background:var(--card);border:2px solid var(--ink);border-radius:16px;padding:20px;box-shadow:7px 7px 0 var(--ink)}
+.prob{font:600 1.3rem Georgia,serif;color:var(--soft);margin:0}
+.res{font:700 3rem/1.1 Georgia,serif;margin:2px 0 6px}
+.chip{display:inline-block;font-size:.78rem;background:var(--hi);color:var(--hifg);padding:2px 10px;border-radius:99px;margin-bottom:12px}
+.step{border-left:4px solid var(--hi);padding:2px 0 2px 12px;margin:10px 0;font-size:.98rem}
+.step b{display:block}
+.try{margin:14px 0 0;padding-top:12px;border-top:2px dashed var(--line);font-size:.95rem;color:var(--soft)}
+.js .s{opacity:0;transform:translateY(8px);transition:opacity .45s,transform .45s}
+.js .s.on{opacity:1;transform:none}
+section{padding:56px 0;border-top:2px solid var(--line)}
+h2{font:700 clamp(1.7rem,4vw,2.4rem)/1.12 Georgia,serif;letter-spacing:-.02em;margin:0 0 26px;max-width:22ch}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.box{border:2px solid var(--line);border-radius:14px;padding:20px;background:var(--card)}
+.box.win{border-color:var(--ink);box-shadow:5px 5px 0 var(--ink)}
+.box h3{margin:0 0 10px;font:700 1.1rem system-ui,sans-serif}
+.box .big{font:700 2.2rem Georgia,serif;margin:0}
+.box p{margin:8px 0 0;color:var(--soft)}
+.box.win p{color:var(--ink)}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.facts h3{font:700 1.2rem Georgia,serif;margin:0 0 6px;background:linear-gradient(transparent 62%,var(--hi) 62%);display:inline}
+.facts p{margin:10px 0 0;color:var(--soft);font-size:.98rem}
+ol.go{list-style:none;counter-reset:n;padding:0;margin:0;max-width:640px}
+ol.go li{counter-increment:n;position:relative;padding:0 0 18px 52px}
+ol.go li::before{content:counter(n);position:absolute;left:0;top:-2px;width:36px;height:36px;border-radius:50%;background:var(--hi);color:var(--hifg);display:grid;place-items:center;font:700 1.05rem Georgia,serif;border:2px solid var(--ink)}
+code{background:var(--key);border-radius:6px;padding:2px 7px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em;word-break:break-word}
+.cta{text-align:center;padding:64px 0 48px}
+.cta h2{margin-left:auto;margin-right:auto;max-width:18ch}
+.honest{font-size:.9rem;color:var(--soft);max-width:56ch;margin:18px auto 0}
+footer{border-top:2px solid var(--line);padding:22px 0 40px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:.9rem;color:var(--soft)}
+@media(max-width:780px){.hero,.vs,.facts{grid-template-columns:1fr}.facts{gap:22px}.hero{padding-bottom:44px}}
+@media(prefers-reduced-motion:reduce){.js .s{transition:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <div class="logo">Function<b>Wise</b></div>
+    <a class="btn sm" href="https://github.com/linkedintelligence/functionwise" target="_blank" rel="noopener">Our GitHub</a>
+  </nav>
+
+  <header class="hero">
+    <div>
+      <h1>The Calculator for <em>Learners</em>, powered by AI.</h1>
+      <p class="lede">Other calculators hand you a number. FunctionWise hands you the number and the reason behind it.</p>
+      <a class="btn" href="https://github.com/linkedintelligence/functionwise" target="_blank" rel="noopener">Try FunctionWise</a>
+      <p class="sub">Open Source. Local. Private.</p>
+    </div>
+    <div class="demo" aria-label="Example of FunctionWise solving a problem">
+      <p class="prob">(12 + 8) ÷ 4² =</p>
+      <p class="res">1.25</p>
+      <span class="chip">checked by the calculator</span>
+      <div class="step s"><b>Brackets first</b>12 + 8 = 20. Anything in parentheses gets solved before the rest.</div>
+      <div class="step s"><b>Then the power</b>4² = 16. Exponents come before division in the order of operations.</div>
+      <div class="step s"><b>Finally, divide</b>20 ÷ 16 = 1.25. Now there's only one operation left.</div>
+      <p class="try s">Try this: (15 + 5) ÷ 2²</p>
+    </div>
+  </header>
+
+  <section>
+    <h2>A regular calculator stops at the answer. We keep going.</h2>
+    <div class="vs">
+      <div class="box">
+        <h3>A regular calculator</h3>
+        <p class="big">1.25</p>
+        <p>Great if you only need a number. Not so great on the night before an exam, when you need to know how it got there.</p>
+      </div>
+      <div class="box win">
+        <h3>FunctionWise</h3>
+        <p class="big">1.25, and why.</p>
+        <p>Every answer comes with short steps that name the rule behind each move, plus a practice problem so it sticks.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Built to be trusted, and to stay yours.</h2>
+    <div class="facts">
+      <div><h3>Answers you can rely on</h3><p>Standard math is computed by a built-in calculator first, so the AI explains a verified result instead of guessing.</p></div>
+      <div><h3>Private by design</h3><p>The AI runs on your machine through Ollama. Your problems never leave your computer, and there is no account to make.</p></div>
+      <div><h3>Works offline</h3><p>After a one-time model download, no internet is needed. Study on the bus, in the library, or on a very bad Wi-Fi day.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Up and running in four steps.</h2>
+    <ol class="go">
+      <li>Install <a href="https://ollama.com" target="_blank" rel="noopener">Ollama</a>, the free app that runs AI models locally.</li>
+      <li>Open a terminal and run <code>ollama pull qwen3:0.6b</code>. It's a small download.</li>
+      <li>Download <code>FunctionWise.html</code> from the <a href="https://github.com/linkedintelligence/functionwise" target="_blank" rel="noopener">project page</a>.</li>
+      <li>Double-click the file and look for the green "Ollama ready" dot. Type a problem and press Enter.</li>
+    </ol>
+  </section>
+
+  <section class="cta" id="get">
+    <h2>Stop copying answers. Start understanding them.</h2>
+    <a class="btn" href="https://github.com/linkedintelligence/functionwise/releases/latest" target="_blank" rel="noopener">Download FunctionWise</a>
+    <p class="honest">A heads-up: the default AI model is tiny, so it shines on foundational math and can wobble on advanced topics. Answers it works out itself are labeled so you know to double-check them. A larger model can be swapped in from Settings.</p>
+  </section>
+
+  <footer>
+    <span>FunctionWise - the Calculator for Learners, powered by AI.</span>
+    <span>Made by Linked Intelligence</span>
+  </footer>
+</div>
+<script>
+(function(){
+  var d=document.documentElement,s=[].slice.call(document.querySelectorAll('.s'));
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+  d.classList.add('js');
+  s.forEach(function(el,i){setTimeout(function(){el.classList.add('on')},500+i*700)});
+})();
+</script>
+</body>
+</html>
